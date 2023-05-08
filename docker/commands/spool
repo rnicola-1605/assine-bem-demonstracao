@@ -1,0 +1,26 @@
+#!/bin/bash
+case $1 in
+	copy)
+	mkdir -p /tmp/maildrop/spool/zpagamentos-app/
+	docker cp zpagamentos-app:/tmp/maildrop/spool/. /tmp/maildrop/spool/zpagamentos-app/
+	echo 'Copiando arquivos...'
+	;;
+	remove)
+	docker exec zpagamentos-app rm -rf /tmp/maildrop/spool/
+	echo 'Removendo arquivos'
+	;;
+	copydate)
+	dia=`date +"%d"`
+	mes=`date +"%m"`
+	ano=`date +"%Y"`
+	path=/tmp/maildrop/spool/zpagamentos-app/$ano/$mes/$dia
+
+	mkdir -p $path
+	
+	docker cp zpagamentos-app:/tmp/maildrop/spool/. $path
+	echo 'Copiando arquivos em formato de data y\m\d'
+	;;
+	*)
+	echo 'Digite um parametro valido (copy, remove, copydate)'
+	;;
+esac

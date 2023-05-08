@@ -1,0 +1,19 @@
+#!/bin/bash
+case $1 in
+	start)
+	$path/bin/runwsgi ${INSTANCE_PATH}/etc/zope.ini > init.log 2>&1 &
+	echo 'Iniciando zope'
+	;;
+	stop)
+	kill -9 $( ps -u $user | grep runwsgi | awk '{print $1}' )
+	echo 'Parando zope'
+	;;
+	restart)
+	kill -9 $( ps -u $user | grep runwsgi | awk '{print $1}' )
+	$path/bin/runwsgi ${INSTANCE_PATH}/etc/zope.ini > init.log 2>&1 &
+	echo 'Reiniciando zope'
+	;;
+	*)
+	echo 'Digite um parametro valido (start, stop, restart)'
+	;;
+esac

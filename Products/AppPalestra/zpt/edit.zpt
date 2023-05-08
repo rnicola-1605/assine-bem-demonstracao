@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<h1 tal:replace="structure here/manage_page_header">Header</h1>
+
+<main class="container-fluid">
+    <h2>Editar controlador App Palestra:</h2>
+
+    <form action="manage_edit" method="post" class="zmi-zpt zmi-add">
+
+
+        <div class="form-group row">
+            <label for="url_assinebem" class="form-label col-sm-2 col-md-3">URL - Assine Bem:</label>
+            <div class="col-sm-9 col-md-10">
+                <input id="url_assinebem" class="form-control" type="text" name="url_assinebem" tal:attributes="value context/url_assinebem" size="40" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="token" class="form-label col-sm-2 col-md-3">Token:</label>
+            <div class="col-sm-9 col-md-10">
+                <input id="token" class="form-control" type="text" name="token" tal:attributes="value context/token" size="40" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="secret" class="form-label col-sm-2 col-md-3">Secret:</label>
+            <div class="col-sm-9 col-md-10">
+                <input id="secret" class="form-control" type="text" name="secret" tal:attributes="value context/secret" />
+            </div>
+        </div>
+
+        <div class="zmi-controls">
+            <input class="btn btn-primary" type="submit" value="Edit App - Palestra" />
+        </div>
+
+    </form>
+</main>
+
+<h1 tal:replace="structure here/manage_page_footer">Footer</h1>

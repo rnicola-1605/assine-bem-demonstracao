@@ -1,0 +1,5 @@
+Products.SiteErrorLog==5.5
+Products.SQLAlchemyDA==1.0.2
+Products.ZSQLMethods==3.14
+psycopg2==2.9.3
+requests==2.27.1

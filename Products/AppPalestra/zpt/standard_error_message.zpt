@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+    <script src="/js/jquery.min.js "></script>
+</head>
+<body>
+    <div class="center">
+        <div class="col-12 center-div">
+            <h1 class="titulo">Ocorreu um erro. Por favor, tente novamente.</h1>
+        </div>
+    </div>
+    <div class="form-container center-div">
+        <div tal:define="dados options/dados|nothing" class="box-edicao">
+            <div class="p" style="padding-bottom: 20px;">
+                <center><h3 class="titulo">Mais informa&ccedil;&otilde;es</h3></center>
+            </div>
+            <div class="p" tal:condition="dados/error_message|nothing">
+                <strong>Mensagem do erro:</strong> <span tal:replace="dados/error_message|nothing" />
+            </div>
+            <div class="p" tal:condition="dados/error_type|nothing">
+                <strong>Tipo do erro:</strong> <span tal:replace="dados/error_type|nothing" />
+            </div>
+            <div class="p" tal:condition="dados/error_value|nothing">
+                <strong>Erro:</strong> <span tal:replace="dados/error_value|nothing" />
+            </div>
+            <div class="p" tal:condition="dados/server_port|nothing">
+                <strong>Instancia:</strong> <span tal:replace="dados/server_port|nothing" />
+            </div>
+
+            <button id="btn_back">Voltar</button>
+        </div>
+    </div>
+</body>
+<footer>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            var btn_back = document.getElementById('btn_back');
+            btn_back.addEventListener('click', function(event){
+                event.preventDefault();
+                history.back(-1);
+            })
+        })
+    </script>
+</footer>
+</html>

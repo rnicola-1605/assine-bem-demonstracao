@@ -1,0 +1,19 @@
+version: "3.3"
+services:
+  app:
+    build:
+      args:
+        user: zope
+        path: /zope/
+        tokenGit: 
+        userZope: 
+        passZope: 
+        portZope: 8080
+      context: ./
+      dockerfile: .
+    tty: true
+    image: assine-bem-demonstracao-img
+    container_name: assine-bem-demonstracao-app
+    restart: unless-stopped
+    ports:
+      - "8099:8080"

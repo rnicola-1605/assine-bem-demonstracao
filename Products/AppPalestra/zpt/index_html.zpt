@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>App - Palestra</title>
+
+        <script src="/js/jquery.min.js "></script>
+
+        <!-- CSS only -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+        <style type="text/css">
+            .item{
+                display: block;
+                margin: 10px 5px;
+            }
+            .item input{
+                margin: 5px;
+            }
+
+            .row>select{
+                width: 100%;
+                /*max-width: 550px;*/
+                max-width: 530px;
+            }
+
+            div.double-input>input,
+            div.double-input>select{
+                width: 50%;
+                margin: 2px;
+            }
+            div.triple-input>input,
+            div.triple-input>select{
+                width: 33%;
+                margin: 2px;
+            }
+
+            div.double-column,
+            div.triple-column{
+                display: flex;
+            }
+
+            div.double-column>div{
+                width: 50%;
+                margin: 2px;
+                display: inline-block;
+                vertical-align: top;
+            }
+            div.triple-column>div{
+                width: 33%;
+                margin: 2px;
+                display: inline-block;
+                vertical-align: top;
+            }
+
+            div.double-column.break{
+                word-break: break-all;
+            }
+
+            .row>input[type="text"],
+            .row>input[type="tel"],
+            .row>input[type="email"],
+            .row>input[type="password"],
+            .row>input[type='submit'],
+            .row>input[type='date'],
+            .row>button,
+            .row>label{
+                width: 100%;
+                max-width: 530px;
+            }
+
+            .row>input[type='submit'], .row>input[type='file']{
+                margin: 10px 0px;
+            }
+
+            .row>label.checkbox{
+                font-size: small;
+                vertical-align: text-top;
+                font-weight: 600;
+            }
+
+            .row.input{
+                display: block;
+                max-width: 530px;
+            }
+
+            .row{
+                display: inline-flex;
+                width: 100%;
+                padding: 5px 0px;
+            }
+
+            .row.col-s33{
+                width: 32.333%;
+            }
+
+            .row.col-s25{
+                width: 24%;
+            }
+
+            .row.col-s100{
+                width: 100%;
+            }
+
+            .text-left{
+                text-align: left;
+            }
+
+            .center{
+                text-align: center;
+            }
+
+            .alinhar-em-linha{
+                display: inline-block;
+            }
+
+            .alinhar-em-bloco{
+                display: block;
+            }
+
+            .alinha-top{
+                vertical-align: top;
+            }
+
+            div.centralizar{
+                display: block;
+                margin: 0 auto;
+            }
+
+            .json_render{
+                width: 100%;
+                background: 0 0;
+                border: 1px solid;
+                padding: 10px;
+                min-height: 150px;
+                resize: none;
+                font-family: lucida console,Monaco,monospace;
+                font-size: 0.8rem;
+                line-height: 1.2;
+            }
+
+            div.form-disparo{
+                display: block;
+                margin: 0 auto;
+                padding: 10px 5px;
+                text-align: center;
+                border: 1px solid;
+                max-width: 500px;
+            }
+
+            [invalido="1"]{
+                color: red;
+            }
+
+            [assinado="1"]{
+                color: green;
+            }
+
+            a[onclick]{
+                cursor: pointer;
+            }
+
+            div.tabela-responsiva [sub_menu="1"]{
+                display: flex;
+                width: 80%;
+                margin: 0 auto;
+                border-top: 1px solid;
+                border-left: 1px solid;
+                border-right: 1px solid;
+                position: relative;
+                border-top-right-radius: 10px;
+                border-top-left-radius: 10px;
+                overflow-x: scroll;
+                overflow-y: hidden;
+                white-space: nowrap;
+            }
+
+
+            div.tabela-responsiva [sub_menu="1"]>div{
+                width: 100%;
+                min-width: 150px;
+                display: inline-block;
+                padding: 5px;
+                padding-top: 15px;
+                padding-bottom: 15px;
+                border-left: 1px solid;
+                border-right: 1px solid;
+                border-bottom: 1px solid;
+                text-align: center;
+                font-weight: 400;
+                font-size: 18px;
+                /*float: left;*/
+                overflow-x: hidden;
+                overflow-y: auto;
+                cursor: pointer;
+                word-wrap: break-word;
+                word-break: break-word;
+                /*height: 40px;*/
+                white-space: normal;
+            }
+
+            div.tabela-responsiva [sub_menu="1"]>div[selecionado="1"]{
+                border-bottom: 0;
+                border-bottom: 1px solid;
+                color: #ffffff;
+                font-weight: 600;
+                background-color: #0d6efd;
+                border-bottom-color: #0d6efd;
+            }
+
+            div.tabela-responsiva [sub_menu="1"]>div[selecionado="0"]{
+                font-weight: 200;
+                color: #03233f;
+            }
+
+            div.tabela-responsiva [sub_menu="1"]>div[selecionado="0"]:hover{
+                background-color: #f2f2f2;
+            }
+            div.tabela-responsiva [sub_menu="1"]>div[selecionado="0"]:hover span{
+                color: #03233f;
+            }
+
+            div.tabela-responsiva [sub_menu="1"]>div:not(:first-child){
+                margin-left: -1px;
+            }
+
+            div.tabela-responsiva [sub_menu="1"]>div:first-child{
+                border-top-left-radius: 10px;
+                border-left: none;
+            }
+
+            div.tabela-responsiva [sub_menu="1"]>div:last-child{
+                /*float: none;*/
+                border-right: none;
+                border-left: none;
+            }
+
+            div.tabela-responsiva [bloco_acompanhamento="1"]{
+                /*border: 1px solid #03233f;*/
+                border-top: none;
+                width: 100%;
+                margin-top: -1px;
+                margin-bottom: 20px;
+                min-height: 40vh;
+            }
+
+            div.tabela-responsiva [bloco_acompanhamento="1"][aberto="1"]{
+                display: block;
+            }
+
+            div.tabela-responsiva [bloco_acompanhamento="1"][aberto="0"]{
+                display: none;
+            }
+
+            div.tabela-responsiva [bloco_acompanhamento="1"]>div{
+                width: 100%;
+                height: 100%;
+                display: block;
+                padding: 20px 0;
+            }
+
+            div.tabela-responsiva [bloco_acompanhamento="1"] div.alinhar-em-bloco{
+                margin-top: 20px;
+            }
+
+        </style>
+    </head>
+    <body style="margin: 10px 20px">
+        <div class="double-column">
+            <div class="tabela-responsiva">
+                <h1>Sistema</h1>
+
+                <div class="alinhar-em-bloco" id="submenu-endereco">
+                    <div sub_menu="1">
+                        <div class="noselect" selecionado="1" bloco_ref="bloco-documento">Documento</div>
+                        <div class="noselect" selecionado="0" bloco_ref="bloco-modelo">Modelo</div>
+                    </div>
+
+                    <div class="background-laranja" bloco_acompanhamento="1" aberto="1" id="bloco-documento">
+                        <div>
+                            <form action="processar" method="post" enctype="multipart/form-data">
+                                <div class="form-disparo">
+                                    <div class="alinhar-em-bloco">
+                                        <p class="h5">Novo disparo avulso:</p>
+                                        <input type="file" name="arquivo" style="display: none;" />
+                                        <span class="alinhar-em-bloco" id="nome_arquivo_selecionado"></span>
+                                    </div>
+
+                                    <br/>
+                                    <div class="alinhar-em-bloco">
+                                        <div class="d-grid gap-2 col-6 mx-auto">
+                                            <button class="btn btn-primary btn-sm" id="btn_add_doc">+ Add Documento</button>
+                                            <button class="btn btn-primary btn-sm" id="btn_add">+ Add Assinante</button>
+                                        </div>
+                                    </div>
+
+                                    <br/>
+                                    <div id="form-assinantes"></div>
+
+                                    <br/>
+                                    <button class="btn btn-primary btn-sm">Enviar para assinatura</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="background-laranja" bloco_acompanhamento="1" aberto="0" id="bloco-modelo">
+                        <div>
+                            <form action="processar_modelo" method="post">
+                                <div class="form-disparo">
+                                    <div class="alinhar-em-bloco">
+                                        <p class="h5">Novo disparo modelo:</p>
+                                    </div>
+
+                                    <br/>
+                                    <div class="alinhar-em-bloco">
+                                        <div class="d-grid gap-2 col-6 mx-auto">
+                                            <select id="id_modelo" name="id_modelo">
+                                                <option value="0"></option>
+                                                <option tal:repeat="m options/modelos" tal:attributes="value m/id_externo" tal:content="m/nome"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <br/>
+                                    <div id="form-assinantes-modelo"></div>
+
+                                    <br/>
+                                    <button id="btn_submit_modelo" class="btn btn-primary btn-sm">Enviar para assinatura</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alinhar-em-bloco">
+                <h1>Log</h1>
+
+                <button onclick="limpar_log()">Limpar</button>
+                <br/>
+                <br/>
+
+                <div>
+                    <h3>URL:</h3>
+                    <span class="alinhar-em-bloco" id="url_entrada"></span>
+                </div>
+                <br/>
+
+                <h3>Entrada:</h3>
+                <textarea class="json_render" id="entrada" cols="30" rows="10" readonly="" ok="1"></textarea>
+                <br/>
+
+                <h3>Saída:</h3>
+                <textarea class="json_render" id="saida" cols="30" rows="10" readonly="" ok="1"></textarea>
+            </div>
+        </div>
+
+        <div class="alinhar-em-bloco">
+            <br/>
+            <br/>
+
+            <h2>Documentos disparados:</h2>
+            <table class="table table-sm table-striped">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Identificacao</th>
+                    <th scope="col">Hora disparo</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">&nbsp;</th>
+                    <th scope="col">&nbsp;</th>
+                </tr>
+                <tr tal:condition="options/lista_uploads|nothing" tal:repeat="lu python: context.get_lista_uploads(desc=True)">
+                    <tal:block tal:define="invalido python: 1 if lu.get('invalido') else 0;
+                                           assinado python: 1 if lu.get('assinado') else 0;
+                                           pode_invalidar python: not (invalido or assinado);
+                                           eh_modelo python: True if lu.get('id_modelo') else False;">
+                        <td class="col-id-doc" tal:attributes="id_externo lu/id_externo" tal:content="lu/id_externo"></td>
+                        <td class="col-ident-doc" tal:attributes="id_externo lu/id_externo" tal:content="lu/identificacao_arquivo"></td>
+                        <td class="col-dt-doc" tal:attributes="id_externo lu/id_externo" tal:content="lu/dt_criacao"></td>
+                        <td class="col-status-doc" tal:attributes="id_externo lu/id_externo; invalido invalido; assinado assinado;" tal:content="lu/descricao_documento_status"></td>
+                        <td tal:attributes="id_externo lu/id_externo">
+                            <div class="d-grid gap-2 d-md-block" tal:attributes="id_externo lu/id_externo">
+                                <button class="btn btn-secondary btn-sm" onclick="assinantes(this, event)">Assinantes</button>
+                                <button class="btn btn-secondary btn-sm" onclick="download(this, event)">Download</button>
+                                <tal:block tal:condition="eh_modelo">
+                                    <button class="btn btn-secondary btn-sm" onclick="campos_preenchidos(this, event)">Campos preenchidos</button>
+                                </tal:block>
+
+                                <tal:block tal:condition="pode_invalidar">
+                                    <button class="btn btn-secondary btn-sm" onclick="invalidar(this, event)">Invalidar</button>
+                                </tal:block>
+                            </div>
+                        </td>
+                        <td tal:attributes="id_externo lu/id_externo">
+                            <a class="alinhar-em-bloco" onclick="get(this, event)">
+                                GET: documento
+                            </a>
+                            <a class="alinhar-em-bloco" onclick="assinaturas_pendentes(this, event)">
+                                GET: assinaturas/pendentes
+                            </a>
+                            <a class="alinhar-em-bloco" onclick="novo_acesso(this, event)">
+                                POST: parte/novo_acesso
+                            </a>
+                        </td>
+                    </tal:block>
+                </tr>
+                <tr tal:condition="not: options/lista_uploads|nothing">
+                    <td colspan="10">Nenhum disparo feito ainda.</td>
+                </tr>
+            </table>
+        </div>
+
+    </body>
+    <footer>
+
+        <script type="text/javascript">
+            var url_entrada = null;
+            var entrada = null;
+            var saida = null;
+
+            function limpar_log() {
+                url_entrada.innerHTML = '';
+                entrada.innerHTML = '';
+                saida.innerHTML = '';
+            }
+
+            function carregar_log(retorno, parametros){
+                var retorno = jQuery.parseJSON(retorno);
+
+                url_entrada.innerHTML = retorno.url_entrada;
+
+                if (retorno.entrada){
+                    $(entrada).text(JSON.stringify(retorno.entrada, undefined, 4));
+                }
+                if (retorno.saida){
+                    $(saida).text(JSON.stringify(retorno.saida, undefined, 4));
+                }
+            }
+
+            function get(btn, event){
+                event.preventDefault();
+
+                let id_externo = btn.parentElement.getAttribute("id_externo");
+
+                var data = new FormData();
+                data.append('id_externo', id_externo);
+
+                ferramentas_portal.ajax_macro('get', data, null, carregar_log, {id_externo: id_externo});
+            }
+
+            function download(btn, event){
+                event.preventDefault();
+                window.location='download?id_externo=' + btn.parentElement.getAttribute("id_externo");
+            }
+
+            function invalidar(btn, event){
+                event.preventDefault();
+                if (confirm("Tem certeza que deseja invalidar?")){
+                    let id_externo = btn.parentElement.getAttribute("id_externo");
+
+                    var data = new FormData();
+                    data.append('id_externo', id_externo);
+
+                    ferramentas_portal.ajax_macro(
+                        'invalidar',
+                        data,
+                        null,
+                        __pos_invalida,
+                        {id_externo: id_externo, btn_invalida: btn}
+                    );
+                }
+            }
+
+            function __pos_invalida(retorno, parametros){
+                if (parametros.btn_invalida){
+                    parametros.btn_invalida.remove();
+                }
+
+                carregar_log(retorno, parametros);
+                let col_status = document.querySelector('.col-status-doc[id_externo="' + parametros.id_externo + '"]');
+                if (col_status){
+                    col_status.innerHTML = 'Inválido.'
+                    col_status.classList.add('text-danger');
+                }
+
+            }
+
+            function assinantes(btn, event){
+                event.preventDefault();
+
+                let id_externo = btn.parentElement.getAttribute("id_externo");
+
+                window.open(
+                    'assinantes?id_externo=' + id_externo,
+                    'Assinantes',
+                    "scrollbars=yes,width=1050px,height=700px"
+                );
+            }
+
+            function campos_preenchidos(btn, event){
+                event.preventDefault();
+
+                let id_externo = btn.parentElement.getAttribute("id_externo");
+
+                window.open(
+                    'campos_preenchidos?id_externo=' + id_externo,
+                    'Campos preenchidos',
+                    "scrollbars=yes,width=1050px,height=700px"
+                );
+            }
+
+            function assinaturas_pendentes(btn, event){
+                event.preventDefault();
+
+                ferramentas_portal.ajax_macro(
+                    'assinaturas_pendentes',
+                    null,
+                    null,
+                    carregar_log,
+                    null
+                );
+            }
+
+            function novo_acesso(btn, event) {
+                event.preventDefault();
+
+                let id_externo = btn.parentElement.getAttribute("id_externo");
+
+                var data = new FormData();
+                data.append('id_externo_documento', id_externo);
+
+                ferramentas_portal.ajax_macro(
+                    'novo_acesso',
+                    data,
+                    null,
+                    carregar_log,
+                    null
+                );
+            }
+        </script>
+
+        <script type="text/javascript">
+            // 
+            // Funcoes gerais e inicializacao da tela.
+            // 
+
+            $(document).ready(function(){
+                elementos_submenu = document.querySelectorAll('[sub_menu="1"]');
+                if (elementos_submenu){
+                    elementos_submenu.forEach(function(elemento_submenu){
+
+                        ele_menu = elemento_submenu.querySelectorAll('[bloco_ref]');
+                            ele_menu.forEach(function(ele){
+                            ele.addEventListener('click', function(){
+
+                                if (ele.getAttribute('click_window') == "1") {
+                                    window.open(ele.getAttribute("url_window"), ele.getAttribute("bloco_ref"), "scrollbars=yes" + ",width=" + ele.getAttribute("width_window") + ",height=" + ele.getAttribute("height_window"));
+                                } else {
+                                    _resetar_sub_menu(elemento_submenu.parentElement);
+
+                                    setTimeout(function(){
+                                        ele.setAttribute("selecionado", 1);
+                                        document.getElementById(ele.getAttribute("bloco_ref")).setAttribute("aberto", 1);
+                                    }, 10);
+
+                                }
+                            })
+                        });
+                    })
+                }
+            });
+
+            function _resetar_sub_menu(elemento_pai){
+                elemento_pai.querySelectorAll('[sub_menu="1"]>[bloco_ref]').forEach(function(ele){
+                    ele.setAttribute("selecionado", 0);
+                });
+                elemento_pai.querySelectorAll('[bloco_acompanhamento="1"][aberto]').forEach(function(ele){
+                    ele.setAttribute("aberto", 0);
+                });
+            }
+
+            function criar_form_assinante(prox_index, id_modelo_parte){
+                let input_index = null,
+                        input_nome = null,
+                        input_email = null,
+                        input_celular = null,
+                        btn_rem = null;
+
+                input_index = document.createElement("input");
+                input_index.type = 'hidden';
+                input_index.name = 'index:list';
+                input_index.setAttribute("parte_index", prox_index);
+                input_index.value = prox_index;
+
+                input_identificacao = document.createElement("input");
+                input_identificacao.type = 'text';
+                input_identificacao.id = 'identificacao_' + prox_index;
+                input_identificacao.name = 'identificacao_' + prox_index;
+                input_identificacao.placeholder = 'Identificação';
+                input_identificacao.classList.add('input');
+
+                input_nome = document.createElement("input");
+                input_nome.type = 'text';
+                input_nome.name = 'nome_' + prox_index;
+                input_nome.setAttribute("required", "required");
+                input_nome.placeholder = 'Nome';
+                input_nome.classList.add('input');
+
+                input_email = document.createElement("input");
+                input_email.type = 'email';
+                input_email.name = 'email_' + prox_index;
+                input_email.setAttribute("required", "required");
+                input_email.placeholder = 'E-mail';
+                input_email.classList.add('input');
+
+                input_celular = document.createElement("input");
+                input_celular.type = 'tel';
+                input_celular.name = 'celular_' + prox_index;
+                input_celular.placeholder = 'Celular';
+                input_celular.setAttribute("maxlength", 15);
+                input_celular.classList.add('input');
+                input_celular.addEventListener('keypress', function(event){
+                    modulo_formatacao.formatar_telefone_geral(this, event);
+                });
+
+                let div_container = document.createElement("div");
+                div_container.classList.add('item')
+                div_container.setAttribute("parte_index", prox_index);
+
+                btn_rem = document.createElement("button");
+                $(btn_rem).text('Remover');
+
+                btn_rem.addEventListener('click', function(event){
+                    event.preventDefault();
+                    this.parentElement.remove();
+                })
+                
+                div_container.appendChild(btn_rem);
+
+                $("<br/>").appendTo(div_container);
+
+                if (id_modelo_parte){
+                    let input_id_modelo_parte = null;
+                    input_id_modelo_parte = document.createElement("input");
+                    input_id_modelo_parte.type = 'hidden';
+                    input_id_modelo_parte.name = 'id_modelo_parte_' + prox_index;
+                    input_id_modelo_parte.value = id_modelo_parte;
+                    div_container.appendChild(input_id_modelo_parte);
+                }
+
+                div_container.appendChild(input_index);
+                div_container.appendChild(input_identificacao);
+                div_container.appendChild(input_nome);
+                div_container.appendChild(input_email);
+                div_container.appendChild(input_celular);
+
+                return div_container
+            }
+        </script>
+
+        <script type="text/javascript">
+            // 
+            // Bloco de funcoes para disparar um Modelo.
+            // 
+            function carregar_modelo(retorno, parametros){
+                var retorno = jQuery.parseJSON(retorno);
+
+                if (retorno && retorno.status == 200){
+                    let form_assinantes = document.getElementById('form-assinantes-modelo');
+                    if (form_assinantes){
+                        form_assinantes.innerHTML = '';
+
+                        if (retorno.modelo.partes && retorno.modelo.partes.length > 0){
+                            retorno.modelo.partes.forEach(function(parte, index){
+                                form_assinantes.appendChild(
+                                    criar_form_assinante(index, parte.id_modelo_parte));
+
+                                setTimeout(function(){
+                                    document.getElementById('identificacao_' + index).value = parte.identificacao_parte;
+                                }, 100);
+                            })
+                        }
+                    }
+                }
+                
+            }
+
+            $(document).ready(function(){
+                var sel_modelo = document.querySelector('select#id_modelo');
+                if (sel_modelo){
+                    sel_modelo.addEventListener('change', function(){
+                        let id_modelo = $(this).val();
+                        var data = new FormData();
+                        data.append('id_modelo', id_modelo);
+
+                        ferramentas_portal.ajax_macro('get_modelo_config', data, null, carregar_modelo, {id_modelo: id_modelo});
+
+                    })
+                }
+
+                var btn_submit_modelo = document.getElementById('btn_submit_modelo');
+                if (btn_submit_modelo){
+                    btn_submit_modelo.addEventListener('click', function(event){
+                        event.preventDefault();
+
+                        btn_submit_modelo.closest('form').submit();
+                    });
+                }
+            });
+        </script>
+
+        <script type="text/javascript">
+            // 
+            // Bloco de funcoes para disparar um Documento.
+            // 
+            $(document).ready(function(){
+                url_entrada = document.getElementById('url_entrada');
+                entrada = document.getElementById('entrada');
+                saida = document.getElementById('saida');
+
+                var btn_add_doc = null;
+                var input_file_arquivo = null;
+                input_file_arquivo = document.querySelector('input[type="file"][name="arquivo"]');
+
+                var btn_add = null;
+
+                btn_add_doc = document.getElementById('btn_add_doc');
+                btn_add_doc.addEventListener('click', function(event){
+                    event.preventDefault();
+                    input_file_arquivo.click();
+                });
+
+                input_file_arquivo.addEventListener('change', function(){
+                    document.getElementById('nome_arquivo_selecionado').innerHTML = this.files[0].name;
+                });
+
+                btn_add = document.getElementById('btn_add');
+                btn_add.addEventListener('click', function(event){
+                    event.preventDefault();
+
+                    ele_ult_parte = document.querySelector('div[parte_index]:last-child');
+                    prox_index = ele_ult_parte?parseInt(ele_ult_parte.getAttribute("parte_index")) + 1:0;
+
+                    document.getElementById('form-assinantes').appendChild(criar_form_assinante(prox_index));
+                })
+            });
+        </script>
+        <script type="text/javascript">
+
+            var modulo_formatacao = {
+                formatar_telefone_geral: function (elem, event){
+                    if (event) {
+                        var key = event.keyCode || event.charCode;
+                        if( key == 8 || key == 46 )
+                            return false;
+                    }
+
+                    if (elem.value.length == 1) {  // (
+                        elem.value = "(" + elem.value;
+                    } else if (elem.value.length == 3){  // )
+                        elem.value += ") ";  // Tamanho foi de 3 para 5
+                    } else if (elem.value.length == 9){  // -
+                        elem.value += "-";
+                    } else if (elem.value.length == 14){  // nono digito
+                        var prim_parte = elem.value.slice(0, 9);
+                        var digito_mover = elem.value.slice(10, 11);
+                        var ult_parte = elem.value.slice(11);
+                        var valor_final = prim_parte + digito_mover + "-" + ult_parte;
+                        elem.value = valor_final;
+                    }
+                }
+            }
+
+            var ferramentas_portal = {
+                obter_xmlhttp: function(){
+                    var xmlhttp = null;
+
+                    if (window.XMLHttpRequest) {
+                        xmlhttp = new XMLHttpRequest();
+                    } else{
+                        // Codigo para os browsers antigos (IE 5, IE 6 e etc...)
+                        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                    };
+
+                    return xmlhttp;
+                },
+
+                ajax_macro: function(url, form_data, ele_resultado, callback, paramcallback){
+                    var resposta = null;
+                    if (form_data == null || !(form_data)) form_data = new FormData();
+
+                    var xmlhttp = ferramentas_portal.obter_xmlhttp();
+                    xmlhttp.open("POST", url, true);
+
+                    xmlhttp.onload = function(){
+                        resposta = this.responseText;
+                        if (resposta && resposta.length > 0){
+                            if (ele_resultado) $(ele_resultado).html(resposta);
+                            if (callback) callback(resposta, paramcallback);
+                        }else{
+                            if (callback) callback(false);
+                        }
+                        return true;
+                    }
+
+                    xmlhttp.send(form_data);
+                },
+            }
+        </script>
+
+        <script type="text/javascript">
+            var modulo_api = {
+                formata_json_and_enlight: async function(){
+                    modulo_api.formata_json();
+
+                    setTimeout(function(){
+                        modulo_api.enlight_js();
+                    }, 300);
+                },
+
+                formata_json: function(){
+                    $(document).ready(function(){
+                        $(".formatar-json").each(function(){
+                          conteudo_formatado = JSON.parse($(this).text());
+                          variavel = JSON.stringify(conteudo_formatado, null, 4);
+                          $(this).text(variavel);
+                        });
+
+                        return true;
+                    });
+                },
+
+                enlight_js: function(){
+                    EnlighterJS.init('pre.formatar-json', 'code', {
+                        language : 'JSON',
+                        theme: 'enlighter',
+                        indent : 2
+                    });
+                }
+            }
+        </script>
+    </footer>
+</html>
