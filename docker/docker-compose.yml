@@ -5,12 +5,11 @@ services:
       args:
         user: zope
         path: /zope/
-        tokenGit: 
         userZope: 
         passZope: 
         portZope: 8080
       context: ./
-      dockerfile: .
+      dockerfile: Dockerfile
     tty: true
     image: assine-bem-demonstracao-img
     container_name: assine-bem-demonstracao-app

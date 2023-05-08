@@ -8,9 +8,6 @@ with open("README.md", "r") as fh:
 
 long_description += "\n------\n"
 
-with open("CHANGES.md", "r") as fh:
-    long_description += fh.read()
-
 desc = "Produto Zope para demonstração de integração com Assine Bem."
 
 setuptools.setup(

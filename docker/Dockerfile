@@ -1,4 +1,3 @@
-# FROM totalip/slack-pag:latest
 FROM python:3.7
 
 LABEL MAINTAINER="Rodrigo Nicola"
@@ -8,12 +7,10 @@ LABEL AUTHOR_EMAIL="rnicolasilva@gmail.com"
 ARG uid=1000
 ARG user=zope
 ARG path=/zope/
-ARG tokenGit
 ARG userZope
 ARG passZope
 ARG portZope
 
-RUN if [ -z $tokenGit ]; then echo 'tokenGit nao foi informado. Cancelando.' && exit 1; echo 'OK'; fi;
 RUN if [ -z $userZope ]; then echo 'userZope nao foi informado. Cancelando.' && exit 1; echo 'OK'; fi;
 RUN if [ -z $passZope ]; then echo 'passZope nao foi informado. Cancelando.' && exit 1; echo 'OK'; fi;
 RUN if [ -z $portZope ]; then echo 'portZope nao foi informado. Cancelando.' && exit 1; echo 'OK'; fi;
@@ -45,9 +42,13 @@ ADD --chown=zope ./config ./config
 ADD --chown=zope ./Start_products ./Start_products
 ADD --chown=zope ./requirements.txt ./requirements.txt
 
-RUN ./bin/pip install --upgrade pip
-RUN ./bin/pip install -r requirements.txt
-RUN ./bin/pip install -U git+https://github.com/rnicola-1605/assine-bem-demonstracao
+# Instala o Zope e outros produtos
+RUN bin/pip install --no-cache-dir --upgrade pip wheel && \
+    bin/pip install --no-cache-dir --upgrade \
+        -r https://zopefoundation.github.io/Zope/releases/5.5/requirements-full.txt \
+        -r requirements.txt \
+        git+https://github.com/rnicola-1605/assine-bem-demonstracao
+
 RUN ./bin/mkwsgiinstance --dir instance --user ${userZope}:${passZope}
 
 ENV INSTANCE_PATH=${DIRPATH}/instance
