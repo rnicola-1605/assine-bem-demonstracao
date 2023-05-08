@@ -29,12 +29,20 @@ class AppPalestra(SimpleItem, Historical):
     def __init__(self, id, url_assinebem, token=None, secret=None):
         """Construtor."""
         self.id = id
-        self.url_assinebem = url_assinebem
+        self.url_assinebem = self._formatar_url(url_assinebem)
         self.token = token
         self.secret = secret
         self.lista_uploads = {}
         self.callbacks_api = []
         self.gestor = Gestor('Gestor')
+
+    def _formatar_url(self, url):
+        """Formata a URL."""
+        if url:
+            if url[-1] != '/':
+                url += '/'
+
+        return url
 
     def add_upload(self, dados):
         """Adc upload na lista."""

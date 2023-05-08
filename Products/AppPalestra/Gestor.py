@@ -103,6 +103,8 @@ class Gestor(SimpleItem.SimpleItem):
             auth=self._obter_auth(url=url_modelos, query='')
         )
 
+        _modelos = []
+
         if r.status_code == 200:
             _modelos = r.json()['modelos']
 
