@@ -16,9 +16,6 @@ RUN if [ -z $passZope ]; then echo 'passZope nao foi informado. Cancelando.' && 
 RUN if [ -z $portZope ]; then echo 'portZope nao foi informado. Cancelando.' && exit 1; echo 'OK'; fi;
 
 
-# # -- LANG do container deve ser em UTF-8
-ENV LANG=en_us.UTF-8
-
 ENV DIRPATH=$path
 ENV userZope=$userZope
 ENV passZope=$passZope
@@ -43,7 +40,7 @@ ADD --chown=zope ./Start_products ./Start_products
 ADD --chown=zope ./requirements.txt ./requirements.txt
 
 # Instala o Zope e outros produtos
-RUN bin/pip install --upgrade pip && \
+RUN bin/pip install --upgrade pip wheel && \
     bin/pip install --upgrade \
         -r https://zopefoundation.github.io/Zope/releases/5.5/requirements-full.txt \
         -r requirements.txt \
@@ -53,11 +50,11 @@ RUN ./bin/mkwsgiinstance --dir instance --user ${userZope}:${passZope}
 
 ENV INSTANCE_PATH=${DIRPATH}/instance
 
-RUN cp config/* ${INSTANCE_PATH}/etc/.
+# RUN cp config/* ${INSTANCE_PATH}/etc/.
 
 # # -- Altera as instancias conforme INSTANCE_PATH do ARG.
-RUN sed -i --expression "s@INSTANCIA@$INSTANCE_PATH@" ${INSTANCE_PATH}/etc/zope.conf.empty
-RUN sed -i --expression "s@INSTANCIA@$INSTANCE_PATH@" ${INSTANCE_PATH}/etc/zope.ini
+# RUN sed -i --expression "s@INSTANCIA@$INSTANCE_PATH@" ${INSTANCE_PATH}/etc/zope.conf.empty
+# RUN sed -i --expression "s@INSTANCIA@$INSTANCE_PATH@" ${INSTANCE_PATH}/etc/zope.ini
 
 # adiciona e altera o zopectl
 ADD --chown=zope ./commands/zopectl ${path}/
@@ -83,6 +80,5 @@ EXPOSE $portZope
 # # -- Inicia zope e ativa virtualenv
 # ${DIRPATH}/bin/python ${DIRPATH}/config/configure.py && \
 
-CMD sh ${INSTANCE_PATH}/etc/configure.sh && \
-    ${DIRPATH}/bin/runwsgi -v instance/etc/zope.ini && \
+CMD ${DIRPATH}/bin/runwsgi -v instance/etc/zope.ini && \
     source ${DIRPATH}/bin/activate

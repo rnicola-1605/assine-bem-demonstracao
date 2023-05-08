@@ -238,3 +238,4 @@ instancehome $INSTANCE
 #    security-policy-implementation python
 #    verbose-security on
 
+locale en_US
