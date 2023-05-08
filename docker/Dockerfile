@@ -67,12 +67,11 @@ RUN sed -i --expression "s@PATHINS@$INSTANCE_PATH@" ${path}/zopectl
 RUN sed -i --expression "s@USERINS@$user@" ${path}/zopectl
 
 # starta os produtos da assine bem
-RUN cp -R Start_products/ ${path}/lib/python3.7/site-packages/Products
+# RUN cp -R Start_products/ ${path}/lib/python3.7/site-packages/Products
 
 # Ajuste o zope.conf e o zope.ini
 RUN sed -i '/port = 8080/d' ${INSTANCE_PATH}/etc/zope.ini
 RUN sed -i "s/host = 127.0.0.1/listen = *:$portZope/" ${INSTANCE_PATH}/etc/zope.ini
-RUN echo "datetime-format international" >> ${INSTANCE_PATH}/etc/zope.conf
 RUN ln -s ${INSTANCE_PATH}/var/log/event.log
 
 
