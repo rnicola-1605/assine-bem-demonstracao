@@ -10,9 +10,6 @@ from copy import copy
 from .AuthAD import AuthAD
 from .Callbacks import Callbacks
 
-from plone.protect import CheckAuthenticator
-from plone.protect import protect
-
 
 class Gestor(SimpleItem.SimpleItem):
     """Classe para Testar a Integracao."""
@@ -95,27 +92,6 @@ class Gestor(SimpleItem.SimpleItem):
             url=url, query=query,
             token=self.token,
             secret=self.secret)
-
-    def test_utility(self):
-        """."""
-        from plone.keyring.interfaces import IKeyManager
-        from collective.beaker.interfaces import ISessionConfig, ICacheManager
-        from zope.component import getUtility
-
-        from plone.protect.authenticator import createToken
-        token = createToken()
-
-        raise Exception(
-            getUtility(IKeyManager),
-            token,
-            getUtility(ISessionConfig),
-            getUtility(ICacheManager)
-        )
-
-    @protect(CheckAuthenticator)
-    def test_token(self, REQUEST=None):
-        """."""
-        return "OK"
 
     def index_html(self):
         """Tela inicial do sistema demonstracao."""

@@ -40,8 +40,8 @@ ADD --chown=zope ./Start_products ./Start_products
 ADD --chown=zope ./requirements.txt ./requirements.txt
 
 # Instala o Zope e outros produtos
-RUN bin/pip install --upgrade pip wheel && \
-    bin/pip install --upgrade \
+RUN bin/pip install --no-cache-dir --upgrade pip wheel && \
+    bin/pip install --no-cache-dir --upgrade \
         -r https://zopefoundation.github.io/Zope/releases/5.5/requirements-full.txt \
         -r requirements.txt \
         git+https://github.com/rnicola-1605/assine-bem-demonstracao
