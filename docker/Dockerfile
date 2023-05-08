@@ -43,8 +43,8 @@ ADD --chown=zope ./Start_products ./Start_products
 ADD --chown=zope ./requirements.txt ./requirements.txt
 
 # Instala o Zope e outros produtos
-RUN bin/pip install --no-cache-dir --upgrade pip wheel && \
-    bin/pip install --no-cache-dir --upgrade \
+RUN bin/pip install --upgrade pip && \
+    bin/pip install --upgrade \
         -r https://zopefoundation.github.io/Zope/releases/5.5/requirements-full.txt \
         -r requirements.txt \
         git+https://github.com/rnicola-1605/assine-bem-demonstracao
@@ -84,5 +84,6 @@ EXPOSE $portZope
 # # -- Inicia zope e ativa virtualenv
 # ${DIRPATH}/bin/python ${DIRPATH}/config/configure.py && \
 
-CMD ${DIRPATH}/bin/runwsgi -v instance/etc/zope.ini && \
+CMD sh ${INSTANCE_PATH}/etc/configure.sh && \
+    ${DIRPATH}/bin/runwsgi -v instance/etc/zope.ini && \
     source ${DIRPATH}/bin/activate

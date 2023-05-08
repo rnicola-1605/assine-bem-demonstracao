@@ -221,44 +221,6 @@ instancehome $INSTANCE
 #
 #    skip-ownership-checking on
 
-<product-config beaker>
-cache.type file
-cache.data_dir /tmp/cache/data
-cache.lock_dir /tmp/cache/lock
-cache.regions short, long
-cache.short.expire 60
-cache.long.expire 3600
-
-session.auto True
-session.type file
-session.data_dir /tmp/sessions/data
-session.lock_dir /tmp/sessions/lock
-session.save_accessed_time True
-session.key SESSION
-session.timeout 28800
-</product-config>
-
-<product-config sqlalchemyda>
-    id connection
-    title SQLAlchemy wrapper
-    dns ${URL_DB}
-    encoding ${ENCODING_DB}
-</product-config>
-
-<product-config mailhost>
-    id MailHost
-    title
-    smtp_host localhost
-    smtp_port 25
-</product-config>
-
-<product-config api_pagamentos>
-    id api_pagamentos
-    connection connection
-    mailsrv MailHost
-    urldb ${URL_DB}
-</product-config>
-
 # Directive: verbose-security
 #
 # Description:
@@ -276,5 +238,3 @@ session.timeout 28800
 #    security-policy-implementation python
 #    verbose-security on
 
-locale pt_BR
-datetime-format international
